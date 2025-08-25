@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Surat Quraisy - Kelas 4 MI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+            text-align: right;
+            line-height: 2.2;
+            font-weight: normal;
+        }
+        
+        .card-flip {
+            perspective: 1000px;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card-flip.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .draggable {
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+        
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+        
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .kemenag-style {
+            background: linear-gradient(135deg, #0f4c3a 0%, #2d8659 100%);
+        }
+        
+        .verse-container {
+            border-right: 4px solid #2d8659;
+            background: linear-gradient(to left, #f0fdf4, #ffffff);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen font-['Poppins']">
+    <!-- Header dengan Style Kemenag -->
+    <header class="kemenag-style text-white p-4 sm:p-6 shadow-lg">
+        <div class="container mx-auto">
+            <div class="flex items-center mb-3">
+                <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4">
+                    <i class="fas fa-mosque text-2xl sm:text-3xl text-white"></i>
+                </div>
+                <div>
+                  <p class="text-sm opacity-90">Media Pembelajaran Interaktif</p>
+                    <h1 class="text-xl sm:text-3xl font-bold">Al-Quran Hadits Kelas 4</h1>
+                    <h2 class="text-lg sm:text-xl font-semibold arabic-text">Materi Surat Quraisy</h2>
+                </div>
+            </div>
+            <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                <p class="text-sm sm:text-base">Kreasi: MAHFUD SIDK, S.Pd.I</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-2 sm:px-4">
+            <div class="grid grid-cols-3 sm:flex sm:justify-center gap-1 sm:gap-2 py-3 sm:py-4">
+                <button onclick="showSection('materi')" class="nav-btn bg-green-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-green-700 transition-colors ring-2 ring-white">
+                    <i class="fas fa-book-quran mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Materi</span>
+                </button>
+                <button onclick="showSection('mufradat')" class="nav-btn bg-emerald-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-emerald-700 transition-colors">
+                    <i class="fas fa-language mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Mufradat</span>
+                </button>
+                <button onclick="showSection('memory-game')" class="nav-btn bg-purple-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-brain mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Memory</span>
+                </button>
+                <button onclick="showSection('drag-drop')" class="nav-btn bg-orange-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-orange-700 transition-colors">
+                    <i class="fas fa-puzzle-piece mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Susun</span>
+                </button>
+                <button onclick="showSection('urut-ayat')" class="nav-btn bg-red-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-red-700 transition-colors">
+                    <i class="fas fa-sort-numeric-down mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Urut</span>
+                </button>
+                <button onclick="showSection('kuis')" class="nav-btn bg-indigo-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-trophy mb-1 block sm:inline sm:mr-2"></i>
+                    <span class="block sm:inline">Kuis</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <!-- Materi Section -->
+        <div id="materi" class="section">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8 mb-4 sm:mb-8">
+                <div class="text-center mb-6">
+                    <div class="kemenag-style p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-mosque text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 arabic-text">سُورَةُ قُرَيْشٍ</h2>
+                    <h3 class="text-xl sm:text-2xl font-semibold text-green-700">Surat Quraisy</h3>
+                    <div class="bg-green-50 p-3 rounded-lg mt-4 inline-block">
+                        <i class="fas fa-certificate text-green-600 mr-2"></i>
+                        <span class="text-sm font-semibold text-green-700">Font Amiri - Data Lengkap & Terverifikasi</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Info Surat -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg border-l-4 border-green-500">
+                        <h3 class="font-bold text-base sm:text-lg mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-info-circle mr-2 text-green-600"></i>
+                            Informasi Surat
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm sm:text-base text-gray-700">
+                            <div><strong>Nama Arab:</strong> قُرَيْشٍ</div>
+                            <div><strong>Nama Latin:</strong> Quraisy</div>
+                            <div><strong>Arti:</strong> Suku Quraisy</div>
+                            <div><strong>Jumlah Ayat:</strong> 4 ayat</div>
+                            <div><strong>Tempat Turun:</strong> Makkah</div>
+                            <div><strong>Urutan:</strong> Surat ke-106</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ayat-ayat -->
+                    <div class="space-y-6">
+                        <h3 class="font-bold text-lg sm:text-xl text-gray-800 text-center flex items-center justify-center">
+                            <i class="fas fa-volume-up mr-2 text-green-600"></i>
+                            Ayat-ayat dengan Audio Berkualitas
+                        </h3>
+                        
+                        <!-- Surat Lengkap dengan Basmalah -->
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border-2 border-emerald-200 mb-6">
+                            <div class="text-center mb-6">
+                                <div class="bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-bold inline-flex items-center mb-4">
+                                    <i class="fas fa-book-quran mr-2"></i>
+                                    Surat Lengkap dengan Audio
+                                </div>
+                                <button onclick="playAudio('https://everyayah.com/data/Alafasy_128kbps/001001.mp3')" class="audio-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center mx-auto mb-4">
+                                    <i class="fas fa-play mr-2"></i>
+                                    Putar Basmalah
+                                </button>
+                            </div>
+                            
+                            <!-- Basmalah -->
+                            <div class="text-center mb-8 p-6 bg-white rounded-lg border border-emerald-200">
+                                <div class="arabic-text text-3xl sm:text-4xl mb-3 text-emerald-800">
+                                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                                </div>
+                                <div class="text-sm text-emerald-600 italic">
+                                    Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang
+                                </div>
+                            </div>
+                            
+                            <!-- Surat Quraisy Lengkap -->
+                            <div class="bg-white p-6 rounded-lg border border-emerald-200">
+                                <div class="text-center mb-6">
+                                    <button onclick="playFullSurat()" class="audio-btn bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-bold transition-colors flex items-center mx-auto">
+                                        <i class="fas fa-play mr-2"></i>
+                                        Putar Surat Lengkap
+                                    </button>
+                                </div>
+                                <div class="arabic-text text-2xl sm:text-3xl leading-loose text-center text-gray-800 p-6 bg-gradient-to-b from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                                    لِإِيلَافِ قُرَيْشٍ ۝ إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ ۝ فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ ۝ الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّن خَوْفٍ ۝
+                                </div>
+                                <div class="text-center mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                                    <div class="text-base sm:text-lg text-gray-700 italic leading-relaxed">
+                                        <strong>Terjemahan Lengkap:</strong><br>
+                                        "Karena kebiasaan orang-orang Quraisy, (yaitu) kebiasaan mereka bepergian pada musim dingin dan musim panas. Maka hendaklah mereka menyembah Tuhan pemilik rumah ini (Ka'bah), Yang telah memberi makanan kepada mereka untuk menghilangkan lapar dan mengamankan mereka dari ketakutan."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ayat Per Ayat dengan Audio -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-lg sm:text-xl text-gray-800 text-center flex items-center justify-center mb-6">
+                                <i class="fas fa-list-ol mr-2 text-green-600"></i>
+                                Ayat Per Ayat dengan Audio Berkualitas
+                            </h3>
+                            
+                            <!-- Ayat 1 -->
+                            <div class="verse-container p-4 sm:p-6 rounded-lg shadow-sm mb-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center">
+                                        <i class="fas fa-bookmark mr-1"></i>
+                                        آية ١
+                                    </span>
+                                    <button onclick="playAudio('https://everyayah.com/data/Alafasy_128kbps/106001.mp3')" class="audio-btn text-green-600 hover:text-green-800 transition-colors p-2">
+                                        <i class="fas fa-volume-up text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mb-4">
+                                    <div class="arabic-text text-3xl sm:text-4xl mb-4 text-gray-800 leading-relaxed p-6 bg-gradient-to-l from-green-50 to-white rounded-lg border border-green-200">
+                                        لِإِيلَافِ قُرَيْشٍ
+                                    </div>
+                                </div>
+                                
+                                <div class="text-base sm:text-lg text-gray-700 italic mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                                    <strong>Terjemahan:</strong> Karena kebiasaan orang-orang Quraisy
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
+                                    <strong>Keterangan:</strong> Ayat ini menjelaskan tentang kebiasaan suku Quraisy yang sudah menjadi tradisi turun temurun.
+                                </div>
+                            </div>
+
+                            <!-- Ayat 2 -->
+                            <div class="verse-container p-4 sm:p-6 rounded-lg shadow-sm mb-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center">
+                                        <i class="fas fa-bookmark mr-1"></i>
+                                        آية ٢
+                                    </span>
+                                    <button onclick="playAudio('https://everyayah.com/data/Alafasy_128kbps/106002.mp3')" class="audio-btn text-green-600 hover:text-green-800 transition-colors p-2">
+                                        <i class="fas fa-volume-up text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mb-4">
+                                    <div class="arabic-text text-3xl sm:text-4xl mb-4 text-gray-800 leading-relaxed p-6 bg-gradient-to-l from-green-50 to-white rounded-lg border border-green-200">
+                                        إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ
+                                    </div>
+                                </div>
+                                
+                                <div class="text-base sm:text-lg text-gray-700 italic mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                                    <strong>Terjemahan:</strong> (yaitu) kebiasaan mereka bepergian pada musim dingin dan musim panas
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
+                                    <strong>Keterangan:</strong> Mereka berdagang ke Syam (musim panas) dan Yaman (musim dingin) untuk mencari rezeki.
+                                </div>
+                            </div>
+
+                            <!-- Ayat 3 -->
+                            <div class="verse-container p-4 sm:p-6 rounded-lg shadow-sm mb-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center">
+                                        <i class="fas fa-bookmark mr-1"></i>
+                                        آية ٣
+                                    </span>
+                                    <button onclick="playAudio('https://everyayah.com/data/Alafasy_128kbps/106003.mp3')" class="audio-btn text-green-600 hover:text-green-800 transition-colors p-2">
+                                        <i class="fas fa-volume-up text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mb-4">
+                                    <div class="arabic-text text-3xl sm:text-4xl mb-4 text-gray-800 leading-relaxed p-6 bg-gradient-to-l from-green-50 to-white rounded-lg border border-green-200">
+                                        فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ
+                                    </div>
+                                </div>
+                                
+                                <div class="text-base sm:text-lg text-gray-700 italic mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                                    <strong>Terjemahan:</strong> Maka hendaklah mereka menyembah Tuhan pemilik rumah ini (Ka'bah)
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
+                                    <strong>Keterangan:</strong> Sebagai rasa syukur, mereka harus menyembah Allah pemilik Ka'bah yang suci.
+                                </div>
+                            </div>
+
+                            <!-- Ayat 4 -->
+                            <div class="verse-container p-4 sm:p-6 rounded-lg shadow-sm mb-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center">
+                                        <i class="fas fa-bookmark mr-1"></i>
+                                        آية ٤
+                                    </span>
+                                    <button onclick="playAudio('https://everyayah.com/data/Alafasy_128kbps/106004.mp3')" class="audio-btn text-green-600 hover:text-green-800 transition-colors p-2">
+                                        <i class="fas fa-volume-up text-xl"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mb-4">
+                                    <div class="arabic-text text-3xl sm:text-4xl mb-4 text-gray-800 leading-relaxed p-6 bg-gradient-to-l from-green-50 to-white rounded-lg border border-green-200">
+                                        الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّن خَوْفٍ
+                                    </div>
+                                </div>
+                                
+                                <div class="text-base sm:text-lg text-gray-700 italic mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                                    <strong>Terjemahan:</strong> Yang telah memberi makanan kepada mereka untuk menghilangkan lapar dan mengamankan mereka dari ketakutan
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
+                                    <strong>Keterangan:</strong> Allah memberikan dua nikmat besar: makanan (mengatasi lapar) dan keamanan (mengatasi rasa takut).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tafsir -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="font-bold text-base sm:text-lg mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-book-open mr-2 text-blue-600"></i>
+                            Tafsir Singkat
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-blue-700 mb-3 flex items-center">
+                                    <i class="fas fa-bookmark mr-2"></i>
+                                    Tafsir Ayat 1-2
+                                </h4>
+                                <div class="text-sm text-gray-700 leading-relaxed">
+                                    Allah menyebutkan kebiasaan suku Quraisy dalam berdagang. Mereka melakukan perjalanan dagang ke Syam pada musim panas dan ke Yaman pada musim dingin. Kebiasaan ini telah menjadi tradisi turun temurun yang memberikan kemakmuran bagi mereka.
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-blue-700 mb-3 flex items-center">
+                                    <i class="fas fa-bookmark mr-2"></i>
+                                    Tafsir Ayat 3-4
+                                </h4>
+                                <div class="text-sm text-gray-700 leading-relaxed">
+                                    Sebagai rasa syukur atas nikmat yang diberikan, suku Quraisy harus menyembah Allah pemilik Ka'bah. Allah telah memberikan dua nikmat besar: makanan untuk mengatasi kelaparan dan keamanan dari rasa takut. Ini adalah perintah untuk beribadah kepada Allah yang telah memberikan kemudahan dalam hidup mereka.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mufradat Section -->
+        <div id="mufradat" class="section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="text-center mb-6 sm:mb-8">
+                    <div class="bg-gradient-to-r from-emerald-100 to-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                        <i class="fas fa-language text-2xl text-emerald-600"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800"><span class="arabic-text">مُفْرَدَات</span> - Mufradat</h2>
+                    <p class="text-sm text-gray-600 mt-2">Kosakata penting dari Surat Quraisy</p>
+                    <div class="bg-emerald-50 p-2 rounded-lg mt-3 inline-block">
+                        <span class="text-xs font-semibold text-emerald-700">Ketuk kartu untuk melihat artinya</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">قُرَيْشٍ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Suku Quraisy</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ق-ر-ش</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">إِيلَافِ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Kebiasaan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: أ-ل-ف</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">رِحْلَةَ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Perjalanan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ر-ح-ل</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">الشِّتَاءِ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Musim dingin</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ش-ت-و</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">الصَّيْفِ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Musim panas</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ص-ي-ف</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">يَعْبُدُوا</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Menyembah</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ع-ب-د</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">الْبَيْتِ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Rumah (Ka'bah)</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ب-ي-ت</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">أَطْعَمَهُم</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Memberi makan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ط-ع-م</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">جُوعٍ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Lapar</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ج-و-ع</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">آمَنَهُم</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Mengamankan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: أ-م-ن</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">خَوْفٍ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Ketakutan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: خ-و-ف</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105" onclick="flipMufradatCard(this)">
+                        <div class="text-center">
+                            <div class="arabic-text text-2xl font-bold text-gray-800 mb-3">رَبَّ</div>
+                            <div class="text-gray-600 font-semibold hidden meaning">Tuhan</div>
+                            <div class="text-sm text-gray-500 hidden root">Akar kata: ر-ب-ب</div>
+                            <div class="text-xs text-emerald-600 mt-2 opacity-70">Ketuk untuk melihat arti</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Game Section -->
+        <div id="memory-game" class="section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                        <i class="fas fa-brain text-2xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Memory Game Mufradat</h2>
+                    <p class="text-sm text-gray-600 mt-2">Cocokkan kata Arab dengan artinya</p>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <div class="flex justify-center items-center space-x-3 sm:space-x-6 mb-4">
+                        <div class="bg-blue-100 px-3 sm:px-4 py-2 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-blue-600 mr-1"></i>
+                                <span class="text-xs sm:text-sm font-semibold">Skor: </span>
+                            </div>
+                            <span id="memory-score" class="text-blue-600 font-bold text-sm sm:text-base">0</span>
+                        </div>
+                        <div class="bg-green-100 px-3 sm:px-4 py-2 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-puzzle-piece text-green-600 mr-1"></i>
+                                <span class="text-xs sm:text-sm font-semibold">Pasangan: </span>
+                            </div>
+                            <span id="memory-pairs" class="text-green-600 font-bold text-sm sm:text-base">0/6</span>
+                        </div>
+                    </div>
+                    <button onclick="startMemoryGame()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors">
+                        <i class="fas fa-play mr-2"></i>
+                        Mulai Game
+                    </button>
+                </div>
+                
+                <div id="memory-board" class="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
+                    <!-- Memory cards akan dimuat di sini -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Drag Drop Section -->
+        <div id="drag-drop" class="section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                        <i class="fas fa-puzzle-piece text-2xl text-orange-600"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Susun Ayat yang Benar</h2>
+                    <p class="text-sm text-gray-600 mt-2">Seret ayat ke posisi yang tepat</p>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <button onclick="startDragDrop()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors">
+                        <i class="fas fa-shuffle mr-2"></i>
+                        Acak Ayat
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-base sm:text-lg mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-list mr-2 text-orange-600"></i>
+                            Ayat yang Diacak
+                        </h3>
+                        <div id="scrambled-ayat" class="space-y-3">
+                            <!-- Ayat yang diacak -->
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-base sm:text-lg mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-check-circle mr-2 text-green-600"></i>
+                            Susun di Sini
+                        </h3>
+                        <div id="drop-zones" class="space-y-3">
+                            <!-- Drop zones -->
+                        </div>
+                        <button onclick="checkDragDropAnswer()" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-semibold transition-colors w-full">
+                            <i class="fas fa-check mr-2"></i>
+                            Periksa Jawaban
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Urut Ayat Section -->
+        <div id="urut-ayat" class="section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="bg-gradient-to-r from-red-100 to-pink-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                        <i class="fas fa-sort-numeric-down text-2xl text-red-600"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Urutkan Ayat</h2>
+                    <p class="text-sm text-gray-600 mt-2">Klik ayat untuk mengurutkannya dari 1 sampai 4</p>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <button onclick="startUrutAyat()" class="bg-red-500 hover:bg-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors">
+                        <i class="fas fa-shuffle mr-2"></i>
+                        Acak Urutan
+                    </button>
+                </div>
+                
+                <div class="max-w-2xl mx-auto">
+                    <div id="urut-container" class="space-y-4">
+                        <!-- Ayat untuk diurutkan -->
+                    </div>
+                    <button onclick="checkUrutAnswer()" class="mt-6 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-semibold transition-colors w-full">
+                        <i class="fas fa-check mr-2"></i>
+                        Periksa Urutan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kuis Section -->
+        <div id="kuis" class="section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                        <i class="fas fa-trophy text-2xl text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Kuis Evaluasi</h2>
+                </div>
+                
+                <div id="kuis-start" class="text-center">
+                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 sm:p-6 rounded-lg mb-6">
+                        <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center justify-center">
+                            <i class="fas fa-clipboard-list mr-2 text-indigo-600"></i>
+                            Petunjuk Kuis
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3 text-sm sm:text-base text-gray-700">
+                            <div class="flex items-center">
+                                <i class="fas fa-question-circle mr-2 text-blue-500"></i>
+                                20 soal pilihan ganda
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2 text-red-500"></i>
+                                Waktu: 15 menit
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-graduation-cap mr-2 text-green-500"></i>
+                                Nilai minimal: 70
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-eye mr-2 text-purple-500"></i>
+                                Baca dengan teliti
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="startKuis()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Mulai Kuis
+                    </button>
+                </div>
+                
+                <div id="kuis-content" class="hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0 mb-6">
+                        <div class="bg-blue-100 px-3 sm:px-4 py-2 rounded-lg">
+                            <i class="fas fa-list-ol mr-1 text-blue-600"></i>
+                            <span class="text-sm sm:text-base font-semibold">Soal: </span>
+                            <span id="question-number" class="text-blue-600 font-bold">1/20</span>
+                        </div>
+                        <div class="bg-red-100 px-3 sm:px-4 py-2 rounded-lg">
+                            <i class="fas fa-stopwatch mr-1 text-red-600"></i>
+                            <span class="text-sm sm:text-base font-semibold">Waktu: </span>
+                            <span id="timer" class="text-red-600 font-bold">15:00</span>
+                        </div>
+                    </div>
+                    
+                    <div id="question-container" class="mb-6">
+                        <!-- Soal akan dimuat di sini -->
+                    </div>
+                </div>
+                
+                <div id="kuis-result" class="hidden text-center">
+                    <!-- Hasil kuis -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentSection = 'materi';
+        let memoryCards = [];
+        let flippedCards = [];
+        let memoryScore = 0;
+        let memoryPairs = 0;
+        let dragDropData = [];
+        let urutData = [];
+        let currentQuestion = 0;
+        let kuisScore = 0;
+        let kuisTimer = null;
+        let timeLeft = 900;
+        let currentAudio = null;
+
+        // Data lengkap
+        const versesData = [
+            {
+                nomorAyat: 1,
+                teksArab: "لِإِيلَافِ قُرَيْشٍ",
+                teksIndonesia: "Karena kebiasaan orang-orang Quraisy"
+            },
+            {
+                nomorAyat: 2,
+                teksArab: "إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ",
+                teksIndonesia: "(yaitu) kebiasaan mereka bepergian pada musim dingin dan musim panas"
+            },
+            {
+                nomorAyat: 3,
+                teksArab: "فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ",
+                teksIndonesia: "Maka hendaklah mereka menyembah Tuhan pemilik rumah ini (Ka'bah)"
+            },
+            {
+                nomorAyat: 4,
+                teksArab: "الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّن خَوْفٍ",
+                teksIndonesia: "Yang telah memberi makanan kepada mereka untuk menghilangkan lapar dan mengamankan mereka dari ketakutan"
+            }
+        ];
+
+        const mufradatData = [
+            { arabic: "قُرَيْشٍ", meaning: "Suku Quraisy", root: "ق-ر-ش" },
+            { arabic: "إِيلَافِ", meaning: "Kebiasaan", root: "أ-ل-ف" },
+            { arabic: "رِحْلَةَ", meaning: "Perjalanan", root: "ر-ح-ل" },
+            { arabic: "الشِّتَاءِ", meaning: "Musim dingin", root: "ش-ت-و" },
+            { arabic: "الصَّيْفِ", meaning: "Musim panas", root: "ص-ي-ف" },
+            { arabic: "يَعْبُدُوا", meaning: "Menyembah", root: "ع-ب-د" }
+        ];
+
+        const kuisData = [
+            {
+                question: "Surat Quraisy terdiri dari berapa ayat?",
+                options: ["3 ayat", "4 ayat", "5 ayat", "6 ayat"],
+                correct: 1
+            },
+            {
+                question: "Apa arti dari kata 'قُرَيْشٍ'?",
+                options: ["Suku Arab", "Suku Quraisy", "Pedagang", "Musafir"],
+                correct: 1
+            },
+            {
+                question: "Surat Quraisy termasuk golongan surat...",
+                options: ["Makkiyah", "Madaniyah", "Makkiyah-Madaniyah", "Tidak jelas"],
+                correct: 0
+            },
+            {
+                question: "Apa arti dari 'إِيلَافِ'?",
+                options: ["Perjalanan", "Kebiasaan", "Perdagangan", "Keamanan"],
+                correct: 1
+            },
+            {
+                question: "Musim apa saja yang disebutkan dalam surat Quraisy?",
+                options: ["Hujan dan kemarau", "Dingin dan panas", "Semi dan gugur", "Basah dan kering"],
+                correct: 1
+            },
+            {
+                question: "Apa arti dari 'الشِّتَاءِ'?",
+                options: ["Musim panas", "Musim dingin", "Musim hujan", "Musim kemarau"],
+                correct: 1
+            },
+            {
+                question: "Siapa yang harus disembah menurut surat Quraisy?",
+                options: ["Berhala", "Raja", "Tuhan pemilik Ka'bah", "Nenek moyang"],
+                correct: 2
+            },
+            {
+                question: "Apa arti dari 'الْبَيْتِ' dalam surat ini?",
+                options: ["Rumah biasa", "Ka'bah", "Istana", "Toko"],
+                correct: 1
+            },
+            {
+                question: "Allah memberikan dua nikmat kepada suku Quraisy, yaitu...",
+                options: ["Kaya dan terkenal", "Makanan dan keamanan", "Sehat dan kuat", "Pintar dan bijak"],
+                correct: 1
+            },
+            {
+                question: "Apa arti dari 'أَطْعَمَهُم'?",
+                options: ["Memberi minum", "Memberi makan", "Memberi pakaian", "Memberi tempat tinggal"],
+                correct: 1
+            },
+            {
+                question: "Apa arti dari 'جُوعٍ'?",
+                options: ["Haus", "Lapar", "Lelah", "Sakit"],
+                correct: 1
+            },
+            {
+                question: "Apa arti dari 'آمَنَهُم'?",
+                options: ["Mengajarkan", "Mengamankan", "Menguatkan", "Memperkaya"],
+                correct: 1
+            },
+            {
+                question: "Dari apa Allah mengamankan suku Quraisy?",
+                options: ["Penyakit", "Kemiskinan", "Ketakutan", "Kebodohan"],
+                correct: 2
+            },
+            {
+                question: "Surat Quraisy berada di urutan ke berapa dalam Al-Quran?",
+                options: ["105", "106", "107", "108"],
+                correct: 1
+            },
+            {
+                question: "Tema utama surat Quraisy adalah...",
+                options: ["Perintah shalat", "Larangan riba", "Syukur atas nikmat Allah", "Kisah para nabi"],
+                correct: 2
+            },
+            {
+                question: "Suku Quraisy terkenal sebagai...",
+                options: ["Petani", "Pedagang", "Nelayan", "Peternak"],
+                correct: 1
+            },
+            {
+                question: "Perjalanan dagang suku Quraisy dilakukan pada musim...",
+                options: ["Hanya musim panas", "Hanya musim dingin", "Dingin dan panas", "Sepanjang tahun"],
+                correct: 2
+            },
+            {
+                question: "Apa hikmah dari surat Quraisy?",
+                options: ["Pentingnya berdagang", "Wajib bersyukur kepada Allah", "Larangan bepergian", "Perintah berperang"],
+                correct: 1
+            },
+            {
+                question: "Ka'bah dalam surat ini disebut dengan...",
+                options: ["المسجد", "الكعبة", "البيت", "الحرم"],
+                correct: 2
+            },
+            {
+                question: "Mengapa suku Quraisy harus menyembah Allah?",
+                options: ["Karena mereka kaya", "Karena Allah telah memberi nikmat", "Karena mereka pedagang", "Karena mereka tinggal di Makkah"],
+                correct: 1
+            }
+        ];
+
+        // Audio player dengan URL langsung
+        function playAudio(audioUrl) {
+            // Stop previous audio
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+                document.querySelectorAll('.audio-btn').forEach(btn => {
+                    const originalText = btn.textContent.includes('Basmalah') ? 'Putar Basmalah' : 
+                                       btn.textContent.includes('Lengkap') ? 'Putar Surat Lengkap' : 'Audio Qari';
+                    btn.innerHTML = `<i class="fas fa-play mr-1"></i>${originalText}`;
+                    btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    if (btn.textContent.includes('Basmalah')) {
+                        btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    } else if (btn.textContent.includes('Lengkap')) {
+                        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                    } else {
+                        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+                    }
+                });
+            }
+            
+            const button = event.target.closest('.audio-btn');
+            
+            try {
+                // Update button to loading
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
+                const originalClasses = button.className;
+                button.className = button.className.replace(/bg-\w+-\d+/g, 'bg-yellow-600').replace(/hover:bg-\w+-\d+/g, 'hover:bg-yellow-700');
+                
+                // Create audio with direct URL
+                currentAudio = new Audio(audioUrl);
+                
+                currentAudio.addEventListener('canplay', () => {
+                    button.innerHTML = '<i class="fas fa-pause mr-1"></i>Sedang Putar';
+                    button.className = button.className.replace(/bg-\w+-\d+/g, 'bg-red-600').replace(/hover:bg-\w+-\d+/g, 'hover:bg-red-700');
+                });
+                
+                currentAudio.addEventListener('ended', () => {
+                    const originalText = button.textContent.includes('Basmalah') ? 'Putar Basmalah' : 
+                                       button.textContent.includes('Lengkap') ? 'Putar Surat Lengkap' : 'Audio Qari';
+                    button.innerHTML = `<i class="fas fa-play mr-1"></i>${originalText}`;
+                    button.className = originalClasses;
+                    currentAudio = null;
+                });
+                
+                currentAudio.addEventListener('error', () => {
+                    button.innerHTML = '<i class="fas fa-volume-up mr-1"></i>Audio Demo';
+                    button.className = button.className.replace(/bg-\w+-\d+/g, 'bg-blue-500').replace(/hover:bg-\w+-\d+/g, 'hover:bg-blue-600');
+                    currentAudio = null;
+                });
+                
+                currentAudio.play();
+                
+            } catch (error) {
+                console.log('Audio error:', error);
+                button.innerHTML = '<i class="fas fa-volume-up mr-1"></i>Audio Demo';
+                button.className = button.className.replace(/bg-\w+-\d+/g, 'bg-blue-500').replace(/hover:bg-\w+-\d+/g, 'hover:bg-blue-600');
+                currentAudio = null;
+            }
+        }
+
+        // Function untuk memutar surat lengkap
+        function playFullSurat() {
+            const audioUrls = [
+                'https://everyayah.com/data/Alafasy_128kbps/106001.mp3',
+                'https://everyayah.com/data/Alafasy_128kbps/106002.mp3',
+                'https://everyayah.com/data/Alafasy_128kbps/106003.mp3',
+                'https://everyayah.com/data/Alafasy_128kbps/106004.mp3'
+            ];
+            
+            let currentIndex = 0;
+            const button = event.target.closest('.audio-btn');
+            
+            // Stop previous audio
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            function playNext() {
+                if (currentIndex >= audioUrls.length) {
+                    button.innerHTML = '<i class="fas fa-play mr-2"></i>Putar Surat Lengkap';
+                    button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                    currentAudio = null;
+                    return;
+                }
+                
+                button.innerHTML = `<i class="fas fa-pause mr-2"></i>Ayat ${currentIndex + 1}/4`;
+                button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                button.classList.add('bg-red-600', 'hover:bg-red-700');
+                
+                currentAudio = new Audio(audioUrls[currentIndex]);
+                
+                currentAudio.addEventListener('ended', () => {
+                    currentIndex++;
+                    setTimeout(playNext, 1000); // Jeda 1 detik antar ayat
+                });
+                
+                currentAudio.addEventListener('error', () => {
+                    button.innerHTML = '<i class="fas fa-volume-up mr-2"></i>Audio Demo';
+                    button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    button.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                    currentAudio = null;
+                });
+                
+                currentAudio.play();
+            }
+            
+            playNext();
+        }
+
+        // Navigation
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(section).classList.remove('hidden');
+            currentSection = section;
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white');
+            });
+            event.target.classList.add('ring-2', 'ring-white');
+        }
+
+        // Mufradat functions
+        function flipMufradatCard(card) {
+            const meaning = card.querySelector('.meaning');
+            const root = card.querySelector('.root');
+            const hint = card.querySelector('.opacity-70');
+            
+            if (meaning.classList.contains('hidden')) {
+                meaning.classList.remove('hidden');
+                root.classList.remove('hidden');
+                hint.style.display = 'none';
+                card.classList.add('bg-gradient-to-br', 'from-green-100', 'to-emerald-100');
+                card.classList.remove('from-emerald-50', 'to-green-50');
+            } else {
+                meaning.classList.add('hidden');
+                root.classList.add('hidden');
+                hint.style.display = 'block';
+                card.classList.remove('from-green-100', 'to-emerald-100');
+                card.classList.add('bg-gradient-to-br', 'from-emerald-50', 'to-green-50');
+            }
+        }
+
+        // Memory Game
+        function startMemoryGame() {
+            memoryScore = 0;
+            memoryPairs = 0;
+            flippedCards = [];
+            
+            document.getElementById('memory-score').textContent = '0';
+            document.getElementById('memory-pairs').textContent = '0/6';
+            
+            // Create memory cards from mufradat
+            const selectedMufradat = mufradatData.slice(0, 6);
+            memoryCards = [];
+            
+            selectedMufradat.forEach((item, index) => {
+                memoryCards.push({
+                    id: index * 2,
+                    type: 'arabic',
+                    content: item.arabic,
+                    pair: index
+                });
+                memoryCards.push({
+                    id: index * 2 + 1,
+                    type: 'meaning',
+                    content: item.meaning,
+                    pair: index
+                });
+            });
+            
+            // Shuffle cards
+            memoryCards = memoryCards.sort(() => Math.random() - 0.5);
+            
+            // Render cards
+            const board = document.getElementById('memory-board');
+            board.innerHTML = '';
+            
+            memoryCards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-flip h-20 sm:h-24 cursor-pointer';
+                cardDiv.onclick = () => flipMemoryCard(index);
+                cardDiv.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front bg-gradient-to-br from-purple-400 to-purple-600 text-white font-bold text-base sm:text-lg flex items-center justify-center">
+                            <i class="fas fa-question text-xl sm:text-2xl"></i>
+                        </div>
+                        <div class="card-back bg-white border-2 border-purple-300 text-gray-800 font-semibold text-xs sm:text-sm ${card.type === 'arabic' ? 'arabic-text text-sm sm:text-lg' : ''}">
+                            ${card.content}
+                        </div>
+                    </div>
+                `;
+                board.appendChild(cardDiv);
+            });
+        }
+
+        function flipMemoryCard(index) {
+            const cardElement = document.querySelectorAll('.card-flip')[index];
+            
+            if (cardElement.classList.contains('flipped') || flippedCards.length >= 2) {
+                return;
+            }
+            
+            cardElement.classList.add('flipped');
+            flippedCards.push(index);
+            
+            if (flippedCards.length === 2) {
+                setTimeout(() => checkMemoryMatch(), 1000);
+            }
+        }
+
+        function checkMemoryMatch() {
+            const [first, second] = flippedCards;
+            const firstCard = memoryCards[first];
+            const secondCard = memoryCards[second];
+            
+            if (firstCard.pair === secondCard.pair) {
+                // Match found
+                memoryScore += 10;
+                memoryPairs++;
+                document.getElementById('memory-score').textContent = memoryScore;
+                document.getElementById('memory-pairs').textContent = `${memoryPairs}/6`;
+                
+                if (memoryPairs === 6) {
+                    setTimeout(() => {
+                        alert('🎉 Alhamdulillah! Anda berhasil menyelesaikan Memory Game!\n\n🏆 Skor: ' + memoryScore + '\n⭐ Semua pasangan berhasil ditemukan!');
+                    }, 500);
+                }
+            } else {
+                // No match
+                const cardElements = document.querySelectorAll('.card-flip');
+                cardElements[first].classList.remove('flipped');
+                cardElements[second].classList.remove('flipped');
+            }
+            
+            flippedCards = [];
+        }
+
+        // Drag Drop Game
+        function startDragDrop() {
+            dragDropData = [...versesData].sort(() => Math.random() - 0.5);
+            
+            const scrambledContainer = document.getElementById('scrambled-ayat');
+            const dropContainer = document.getElementById('drop-zones');
+            
+            scrambledContainer.innerHTML = '';
+            dropContainer.innerHTML = '';
+            
+            // Create scrambled ayat
+            dragDropData.forEach((verse, index) => {
+                const ayatDiv = document.createElement('div');
+                ayatDiv.className = 'draggable bg-gradient-to-r from-orange-100 to-yellow-100 p-3 sm:p-4 rounded-lg border border-orange-300 cursor-move touch-manipulation';
+                ayatDiv.draggable = true;
+                ayatDiv.dataset.number = verse.nomorAyat;
+                ayatDiv.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-grip-vertical text-orange-500 mr-2"></i>
+                        <span class="text-xs text-orange-600 font-semibold">Seret ke posisi yang tepat</span>
+                    </div>
+                    <div class="arabic-text text-base sm:text-lg font-semibold mb-2">${verse.teksArab}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">${verse.teksIndonesia}</div>
+                `;
+                
+                ayatDiv.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', verse.nomorAyat);
+                });
+                
+                scrambledContainer.appendChild(ayatDiv);
+            });
+            
+            // Create drop zones
+            for (let i = 1; i <= 4; i++) {
+                const dropZone = document.createElement('div');
+                dropZone.className = 'drop-zone bg-gray-50 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 text-center text-gray-500 min-h-[60px] sm:min-h-[80px] flex items-center justify-center';
+                dropZone.dataset.position = i;
+                dropZone.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-crosshairs mr-2"></i>
+                        <span class="text-sm sm:text-base">Ayat ke-${i}</span>
+                    </div>
+                `;
+                
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('drag-over');
+                });
+                
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('drag-over');
+                });
+                
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('drag-over');
+                    
+                    const verseNumber = e.dataTransfer.getData('text/plain');
+                    const verse = versesData.find(v => v.nomorAyat == verseNumber);
+                    
+                    if (verse) {
+                        dropZone.innerHTML = `
+                            <div class="arabic-text text-lg font-semibold mb-2">${verse.teksArab}</div>
+                            <div class="text-sm text-gray-600">${verse.teksIndonesia}</div>
+                        `;
+                        dropZone.dataset.verse = verseNumber;
+                        dropZone.classList.remove('border-dashed', 'border-gray-300');
+                        dropZone.classList.add('border-solid', 'border-green-300', 'bg-green-50');
+                    }
+                });
+                
+                dropContainer.appendChild(dropZone);
+            }
+        }
+
+        function checkDragDropAnswer() {
+            const dropZones = document.querySelectorAll('#drop-zones .drop-zone');
+            let correct = 0;
+            
+            dropZones.forEach((zone, index) => {
+                const expectedVerse = index + 1;
+                const actualVerse = parseInt(zone.dataset.verse);
+                
+                if (actualVerse === expectedVerse) {
+                    correct++;
+                    zone.classList.add('border-green-500', 'bg-green-100');
+                    zone.classList.remove('border-red-500', 'bg-red-100');
+                } else {
+                    zone.classList.add('border-red-500', 'bg-red-100');
+                    zone.classList.remove('border-green-500', 'bg-green-100');
+                }
+            });
+            
+            const score = (correct / 4) * 100;
+            alert(`🎯 Hasil: ${correct}/4 benar (${score}%)\n${score >= 70 ? '🎉 Alhamdulillah! Bagus sekali!' : '💪 Semangat! Coba lagi!'}`);
+        }
+
+        // Urut Ayat Game
+        function startUrutAyat() {
+            urutData = [...versesData].sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById('urut-container');
+            container.innerHTML = '';
+            
+            urutData.forEach((verse, index) => {
+                const ayatDiv = document.createElement('div');
+                ayatDiv.className = 'bg-gradient-to-r from-red-100 to-pink-100 p-4 rounded-lg border border-red-300 cursor-pointer hover:shadow-md transition-all';
+                ayatDiv.dataset.number = verse.nomorAyat;
+                ayatDiv.dataset.selected = 'false';
+                ayatDiv.onclick = () => selectUrutAyat(ayatDiv);
+                ayatDiv.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex-1">
+                            <div class="arabic-text text-lg font-semibold mb-2">${verse.teksArab}</div>
+                            <div class="text-sm text-gray-600">${verse.teksIndonesia}</div>
+                        </div>
+                        <div class="urut-number bg-gray-300 text-gray-600 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-4">
+                            ?
+                        </div>
+                    </div>
+                `;
+                container.appendChild(ayatDiv);
+            });
+        }
+
+        let urutCounter = 1;
+        function selectUrutAyat(element) {
+            if (element.dataset.selected === 'true') return;
+            
+            element.dataset.selected = 'true';
+            element.dataset.order = urutCounter;
+            
+            const numberDiv = element.querySelector('.urut-number');
+            numberDiv.textContent = urutCounter;
+            numberDiv.classList.remove('bg-gray-300', 'text-gray-600');
+            numberDiv.classList.add('bg-blue-500', 'text-white');
+            
+            element.classList.add('opacity-75');
+            
+            urutCounter++;
+            
+            if (urutCounter > 4) {
+                urutCounter = 1;
+            }
+        }
+
+        function checkUrutAnswer() {
+            const ayatElements = document.querySelectorAll('#urut-container > div');
+            let correct = 0;
+            
+            ayatElements.forEach(element => {
+                const actualNumber = parseInt(element.dataset.number);
+                const selectedOrder = parseInt(element.dataset.order);
+                
+                if (actualNumber === selectedOrder) {
+                    correct++;
+                    element.classList.add('border-green-500', 'bg-green-100');
+                } else {
+                    element.classList.add('border-red-500', 'bg-red-100');
+                }
+            });
+            
+            const score = (correct / 4) * 100;
+            alert(`🔢 Hasil: ${correct}/4 benar (${score}%)\n${score >= 70 ? '🎉 Alhamdulillah! Urutan sempurna!' : '💪 Semangat! Coba lagi!'}`);
+            
+            // Reset for next attempt
+            setTimeout(() => {
+                urutCounter = 1;
+                ayatElements.forEach(element => {
+                    element.dataset.selected = 'false';
+                    element.dataset.order = '';
+                    element.classList.remove('opacity-75', 'border-green-500', 'bg-green-100', 'border-red-500', 'bg-red-100');
+                    const numberDiv = element.querySelector('.urut-number');
+                    numberDiv.textContent = '?';
+                    numberDiv.classList.remove('bg-blue-500', 'text-white');
+                    numberDiv.classList.add('bg-gray-300', 'text-gray-600');
+                });
+            }, 3000);
+        }
+
+        // Kuis Functions
+        function startKuis() {
+            document.getElementById('kuis-start').classList.add('hidden');
+            document.getElementById('kuis-content').classList.remove('hidden');
+            
+            currentQuestion = 0;
+            kuisScore = 0;
+            timeLeft = 900; // 15 minutes
+            
+            startTimer();
+            showQuestion();
+        }
+
+        function startTimer() {
+            kuisTimer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    endKuis();
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= kuisData.length) {
+                endKuis();
+                return;
+            }
+            
+            const question = kuisData[currentQuestion];
+            document.getElementById('question-number').textContent = `${currentQuestion + 1}/20`;
+            
+            const container = document.getElementById('question-container');
+            container.innerHTML = `
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">${question.question}</h3>
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => `
+                            <label class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="radio" name="answer" value="${index}" class="mr-3">
+                                <span class="text-gray-700">${String.fromCharCode(65 + index)}. ${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button onclick="nextQuestion()" class="mt-6 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                        ${currentQuestion === kuisData.length - 1 ? '🏁 Selesai' : '➡️ Soal Berikutnya'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuestion() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            
+            if (!selectedAnswer) {
+                alert('⚠️ Pilih jawaban terlebih dahulu!');
+                return;
+            }
+            
+            const answerIndex = parseInt(selectedAnswer.value);
+            const question = kuisData[currentQuestion];
+            
+            if (answerIndex === question.correct) {
+                kuisScore += 5; // 5 points per correct answer
+            }
+            
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function endKuis() {
+            clearInterval(kuisTimer);
+            
+            document.getElementById('kuis-content').classList.add('hidden');
+            document.getElementById('kuis-result').classList.remove('hidden');
+            
+            const percentage = (kuisScore / 100) * 100;
+            const passed = percentage >= 70;
+            
+            document.getElementById('kuis-result').innerHTML = `
+                <div class="bg-gradient-to-r ${passed ? 'from-green-50 to-emerald-50' : 'from-red-50 to-orange-50'} p-8 rounded-xl">
+                    <div class="text-6xl mb-4">${passed ? '🎉' : '😔'}</div>
+                    <h3 class="text-2xl font-bold mb-4 ${passed ? 'text-green-600' : 'text-red-600'}">
+                        ${passed ? 'Alhamdulillah! Anda Lulus!' : 'Belum Lulus'}
+                    </h3>
+                    <div class="text-lg mb-6">
+                        <p><strong>Skor:</strong> ${kuisScore}/100 (${percentage}%)</p>
+                        <p><strong>Jawaban Benar:</strong> ${kuisScore/5}/20</p>
+                        <p><strong>Status:</strong> ${passed ? 'LULUS ✅' : 'BELUM LULUS ❌'}</p>
+                    </div>
+                    <div class="space-x-4">
+                        <button onclick="restartKuis()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            🔄 Ulangi Kuis
+                        </button>
+                        <button onclick="showSection('materi')" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            📚 Kembali ke Materi
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function restartKuis() {
+            document.getElementById('kuis-result').classList.add('hidden');
+            document.getElementById('kuis-start').classList.remove('hidden');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974c2e3924bcfe17',t:'MTc1NjEzNjM1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
